@@ -35,6 +35,40 @@ describe ChewyKiqqer::Mixin do
     end
   end
 
+  context 'setting the backref' do
+
+    it 'sets the defautl to self' do
+      Gummi.async_update_index index: 'xxx'
+      Gummi.chewy_backref.should eq :self
+    end
+
+    it 'can be configured' do
+      Gummi.async_update_index index: 'xxx', backref: :foo
+      Gummi.chewy_backref.should eq :foo
+    end
+
+  end
+
+  context 'computing the backref' do
+    let(:record) { Gummi.new }
+
+    it 'returns the object if the backref is self' do
+      record.compute_backref(:self).should eq record
+    end
+
+    it 'can use a random method' do
+      record.stub(foobar: :bong)
+      record.compute_backref(:foobar).should eq :bong
+    end
+
+    it 'is possible to use a proc' do
+      record.stub(foobar: :dingdong)
+      a_proc = -> (r) { r.foobar }
+      record.compute_backref(a_proc).should eq :dingdong
+    end
+
+  end
+
   context '#queue_job' do
 
     let(:record) { Gummi.new }
