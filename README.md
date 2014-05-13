@@ -2,7 +2,9 @@
 
 This is an alternative udpate/callback mechanism for [Chewy](https://github.com/toptal/chewy). It queues the updates as [Sidekiq](https://github.com/mperham/sidekiq) jobs.
 
-Unlike the standard update_index mechnism it will **always** use the record's index for updates (at this time at least). If you need to do bulk updates, just use chewy's built-in mechanisms.
+You can pass backrefs like with the standard chewy mechanism, but the job itself will always receive an array of ids.
+
+It is possible to install more multiple update hooks.
 
 ## Installation
 
@@ -25,13 +27,23 @@ Just add the module and set it up:
     class User < ActiveRecord::Base
       include ChewyKiqqer::Mixin
       
-      async_update_index index: 'users#user', queue: :other_than_default
+      async_update_index index: 'users#user', queue: :other_than_default, backref: :something
     end
 
 You can also include the mixin into ActiveRecord::Base in an initializer if it should be generally available.
 The queue name is optional. You can also set a default queue name for your application with:
     
     ChewyKiqqer.default_queue = :my_queue
+
+Giving a backref is also optional (also check the chewy docs for the concept). The backref is the element
+which will be indexed. The default is to use the current record.
+
+    # use the current record for the backref
+    ... backref: :self
+    # call a method on the current record to get the backref
+    ... backref: :some_method
+    # Pass a proc. It will be called with the current record to get the backref
+    ... backref: -> (rec) { |rec| rec.do_something }
 
 ## Contributing
 
