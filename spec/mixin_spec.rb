@@ -27,6 +27,12 @@ describe ChewyKiqqer::Mixin do
       ChewyKiqqer::Worker.should_receive(:sidekiq_options).with(queue: :some_queue)
       Gummi.async_update_index(index: 'xxx', queue: :some_queue)
     end
+
+    it 'uses the default queue if none was specified' do
+      ChewyKiqqer::Worker.should_receive(:sidekiq_options).with(queue: :default3)
+      ChewyKiqqer.default_queue = :default3
+      Gummi.async_update_index(index: 'xxx')
+    end
   end
 
   context '#queue_job' do
