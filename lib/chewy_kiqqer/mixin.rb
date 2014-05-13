@@ -1,4 +1,5 @@
 require 'active_support/concern'
+require 'active_support/core_ext/array/wrap'
 
 module ChewyKiqqer
 
@@ -35,8 +36,16 @@ module ChewyKiqqer
       send(backref)
     end
 
+    def get_ids(*objects)
+      Array.wrap(objects.flatten).map { |object| object.respond_to?(:id) ? object.id : object.to_i }
+    end
+
+    def backref_ids
+      get_ids(compute_backref(self.class.chewy_backref))
+    end
+
     def queue_chewy_job
-      ChewyKiqqer::Worker.perform_async(self.class.index_name, id)
+      ChewyKiqqer::Worker.perform_async(self.class.index_name, backref_ids)
     end
   end
 end

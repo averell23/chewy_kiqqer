@@ -5,7 +5,6 @@ class Gummi
 
   def self.after_save(*args) ; end
   def self.after_destroy(*args) ; end
-  def id ; 17 ; end
 
 end
 
@@ -69,13 +68,33 @@ describe ChewyKiqqer::Mixin do
 
   end
 
+  context 'turning backrefs into ids' do
+    let(:record) { Gummi.new }
+
+    it 'uses the ids of the objects' do
+      record.get_ids(double(id: 3), double(id: 6)).should eq [3, 6]
+    end
+
+    it 'turns everything else into ints' do
+      record.get_ids(3, '6').should eq [3, 6]
+    end
+
+    it 'computes the ids from a backref' do
+      Gummi.async_update_index index: 'xxx', backref: :something
+      record.should_receive(:compute_backref).with(:something).and_return([1, 2, 3])
+      record.should_receive(:get_ids).with([1, 2, 3]).and_call_original
+      record.backref_ids
+    end
+  end
+
   context '#queue_job' do
 
     let(:record) { Gummi.new }
 
     it 'queues the job' do
       Gummi.async_update_index index: 'foo#bar'
-      ChewyKiqqer::Worker.should_receive(:perform_async).with('foo#bar', 17)
+      record.should_receive(:backref_ids).and_return([17])
+      ChewyKiqqer::Worker.should_receive(:perform_async).with('foo#bar', [17])
       record.queue_chewy_job
     end
 
