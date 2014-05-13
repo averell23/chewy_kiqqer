@@ -13,14 +13,19 @@ describe ChewyKiqqer::Mixin do
 
   context 'class methods' do
     it 'installs the hooks' do
-      Gummi.should_receive(:after_save).with(:queue_job)
-      Gummi.should_receive(:after_destroy).with(:queue_job)
-      Gummi.async_update_index('xxx')
+      Gummi.should_receive(:after_save).with(:queue_chewy_job)
+      Gummi.should_receive(:after_destroy).with(:queue_chewy_job)
+      Gummi.async_update_index(index: 'xxx')
     end
 
     it 'knows the index_name' do
-      Gummi.async_update_index('bar#foo')
+      Gummi.async_update_index(index: 'bar#foo')
       Gummi.index_name.should eq 'bar#foo'
+    end
+
+    it 'sets the queue name' do
+      ChewyKiqqer::Worker.should_receive(:sidekiq_options).with(queue: :some_queue)
+      Gummi.async_update_index(index: 'xxx', queue: :some_queue)
     end
   end
 
@@ -29,9 +34,9 @@ describe ChewyKiqqer::Mixin do
     let(:record) { Gummi.new }
 
     it 'queues the job' do
-      Gummi.async_update_index 'foo#bar'
+      Gummi.async_update_index index: 'foo#bar'
       ChewyKiqqer::Worker.should_receive(:perform_async).with('foo#bar', 17)
-      record.queue_job
+      record.queue_chewy_job
     end
 
   end
