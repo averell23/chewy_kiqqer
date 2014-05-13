@@ -25,10 +25,13 @@ Just add the module and set it up:
     class User < ActiveRecord::Base
       include ChewyKiqqer::Mixin
       
-      async_update_index 'users#user'
+      async_update_index index: 'users#user', queue: :other_than_default
     end
 
 You can also include the mixin into ActiveRecord::Base in an initializer if it should be generally available.
+The queue name is optional. You can also set a default queue name for your application with:
+    
+    ChewyKiqqer.default_queue = :my_queue
 
 ## Contributing
 
