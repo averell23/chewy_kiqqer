@@ -42,9 +42,9 @@ describe ChewyKiqqer::Index do
                                      queue: 'hello'
 
         Sidekiq::Client.should_receive(:push)
-                       .with(queue: 'hello',
-                             class: ChewyKiqqer::Worker,
-                             args: ['foo#bar', [24]])
+                       .with('queue' => 'hello',
+                             'class' => ChewyKiqqer::Worker,
+                             'args' => ['foo#bar', [24]])
         idx.enqueue object
       end
 
@@ -54,9 +54,9 @@ describe ChewyKiqqer::Index do
         idx = ChewyKiqqer::Index.new index: 'foo#bar'
 
         Sidekiq::Client.should_receive(:push)
-                       .with(queue: :my_default,
-                             class: ChewyKiqqer::Worker,
-                             args: ['foo#bar', [24]])
+                       .with('queue' => :my_default,
+                             'class' => ChewyKiqqer::Worker,
+                             'args' => ['foo#bar', [24]])
         idx.enqueue object
       end
     end

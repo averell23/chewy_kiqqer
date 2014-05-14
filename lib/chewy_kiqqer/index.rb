@@ -9,7 +9,7 @@ module ChewyKiqqer
     end
 
     def enqueue(object)
-      Sidekiq::Client.push(queue: @queue, class: ChewyKiqqer::Worker, args: [@index_name, backref_ids(object)])
+      Sidekiq::Client.push('queue' => @queue, 'class' => ChewyKiqqer::Worker, 'args' => [@index_name, backref_ids(object)])
     end
 
     def backref(object)

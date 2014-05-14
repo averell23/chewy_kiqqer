@@ -38,8 +38,8 @@ describe ChewyKiqqer::Mixin do
   context '#install hooks' do
 
     it 'installs the hooks' do
-      Gummi.should_receive(:after_save).with(:queue_chewy_job)
-      Gummi.should_receive(:after_destroy).with(:queue_chewy_job)
+      Gummi.should_receive(:after_save).with(:queue_chewy_jobs)
+      Gummi.should_receive(:after_destroy).with(:queue_chewy_jobs)
       Gummi.install_chewy_hooks
     end
 
