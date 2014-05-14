@@ -30,8 +30,8 @@ module ChewyKiqqer
       end
 
       def install_chewy_hooks
-        after_save    :queue_chewy_job
-        after_destroy :queue_chewy_job
+        after_save    :queue_chewy_jobs
+        after_destroy :queue_chewy_jobs
       end
     end
 
