@@ -3,8 +3,7 @@ require 'chewy_kiqqer'
 class Gummi
   include ChewyKiqqer::Mixin
 
-  def self.after_save(*args) ; end
-  def self.after_destroy(*args) ; end
+  def self.after_commit(*args) ; end
 
 end
 
@@ -38,8 +37,7 @@ describe ChewyKiqqer::Mixin do
   context '#install hooks' do
 
     it 'installs the hooks' do
-      Gummi.should_receive(:after_save).with(:queue_chewy_jobs)
-      Gummi.should_receive(:after_destroy).with(:queue_chewy_jobs)
+      Gummi.should_receive(:after_commit).with(:queue_chewy_jobs)
       Gummi.install_chewy_hooks
     end
 
