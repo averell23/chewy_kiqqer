@@ -14,22 +14,22 @@ describe ChewyKiqqer::Mixin do
   context '#update_index' do
 
     it 'installs the hooks if nothing was installed yet' do
-      Gummi.should_receive(:install_chewy_hooks)
+      expect(Gummi).to receive(:install_chewy_hooks)
       Gummi.async_update_index(index: 'xxx')
     end
 
     it 'does not install the hooks twice' do
-      Gummi.should_receive(:install_chewy_hooks).once
+      expect(Gummi).to receive(:install_chewy_hooks).once
       Gummi.async_update_index(index: 'xxx')
       Gummi.async_update_index(index: 'xxx')
     end
 
     it 'installs the indexer' do
-      ChewyKiqqer::Index.should_receive(:new)
+      expect(ChewyKiqqer::Index).to receive(:new)
                         .with(index: 'some#thing', queue: :medium, backref: :foobar)
                         .and_return(:idx)
       Gummi.async_update_index(index: 'some#thing', queue: :medium, backref: :foobar)
-      Gummi.indexers.should eq [:idx]
+      expect(Gummi.indexers).to eq [:idx]
     end
 
   end
@@ -37,7 +37,7 @@ describe ChewyKiqqer::Mixin do
   context '#install hooks' do
 
     it 'installs the hooks' do
-      Gummi.should_receive(:after_commit).with(:queue_chewy_jobs)
+      expect(Gummi).to receive(:after_commit).with(:queue_chewy_jobs)
       Gummi.install_chewy_hooks
     end
 
@@ -49,8 +49,8 @@ describe ChewyKiqqer::Mixin do
 
     it 'queues the job' do
       idx = double
-      idx.should_receive(:enqueue).with(record)
-      Gummi.stub(indexers: [idx])
+      expect(idx).to receive(:enqueue).with(record)
+      allow(Gummi).to receive(:indexers).and_return([idx])
       record.queue_chewy_jobs
     end
 

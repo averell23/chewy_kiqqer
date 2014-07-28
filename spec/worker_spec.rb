@@ -7,8 +7,8 @@ describe ChewyKiqqer::Worker do
 
   it 'calls the indexing with chewy' do
     index = double
-    Chewy.should_receive(:derive_type).with('foo#bar').and_return(index)
-    index.should_receive(:import).with([17])
+    expect(Chewy).to receive(:derive_type).with('foo#bar').and_return(index)
+    expect(index).to receive(:import).with([17])
 
     worker.perform('foo#bar', [17])
   end

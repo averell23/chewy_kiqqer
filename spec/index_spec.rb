@@ -7,30 +7,30 @@ describe ChewyKiqqer::Index do
     it 'defaults to the corresponding object' do
       object = Object.new
       idx = ChewyKiqqer::Index.new
-      idx.backref(object).should eq object
+      expect(idx.backref(object)).to eq object
     end
 
     it 'can run a random method' do
       object = double(foobar: :backref)
       idx = ChewyKiqqer::Index.new(backref: :foobar)
-      idx.backref(object).should eq :backref
+      expect(idx.backref(object)).to eq :backref
     end
 
     it 'can use a proc' do
       object = double(foobar: :my_backref)
       idx = ChewyKiqqer::Index.new(backref: -> (r) { r.foobar })
-      idx.backref(object).should eq :my_backref
+      expect(idx.backref(object)).to eq :my_backref
     end
 
     context 'turning backrefs into ids' do
       let(:idx) { ChewyKiqqer::Index.new }
 
       it 'uses the ids of the objects' do
-        idx.backref_ids([double(id: 3), double(id: 6)]).should eq [3, 6]
+        expect(idx.backref_ids([double(id: 3), double(id: 6)])).to eq [3, 6]
       end
 
       it 'turns everything else into ints' do
-        idx.backref_ids([3, '6']).should eq [3, 6]
+        expect(idx.backref_ids([3, '6'])).to eq [3, 6]
       end
 
     end
@@ -41,7 +41,7 @@ describe ChewyKiqqer::Index do
         idx = ChewyKiqqer::Index.new index: 'foo#bar',
                                      queue: 'hello'
 
-        Sidekiq::Client.should_receive(:push)
+        expect(Sidekiq::Client).to receive(:push)
                        .with('queue' => 'hello',
                              'class' => ChewyKiqqer::Worker,
                              'args' => ['foo#bar', [24]])
@@ -53,7 +53,7 @@ describe ChewyKiqqer::Index do
         ChewyKiqqer.default_queue = :my_default
         idx = ChewyKiqqer::Index.new index: 'foo#bar'
 
-        Sidekiq::Client.should_receive(:push)
+        expect(Sidekiq::Client).to receive(:push)
                        .with('queue' => :my_default,
                              'class' => ChewyKiqqer::Worker,
                              'args' => ['foo#bar', [24]])
