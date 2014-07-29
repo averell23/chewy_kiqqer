@@ -1,6 +1,7 @@
 # ChewyKiqqer
 
 [![Build Status](https://travis-ci.org/averell23/chewy_kiqqer.svg?branch=master)](https://travis-ci.org/averell23/chewy_kiqqer)
+[![Code Climate](https://codeclimate.com/github/averell23/chewy_kiqqer.png)](https://codeclimate.com/github/averell23/chewy_kiqqer)
 
 This is an alternative udpate/callback mechanism for [Chewy](https://github.com/toptal/chewy). It queues the updates as [Sidekiq](https://github.com/mperham/sidekiq) jobs.
 
