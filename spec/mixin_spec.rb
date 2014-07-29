@@ -5,6 +5,8 @@ class Gummi
 
   def self.after_commit(*args) ; end
 
+  def id ; 17 ; end
+
 end
 
 describe ChewyKiqqer::Mixin do
