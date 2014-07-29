@@ -35,7 +35,7 @@ module ChewyKiqqer
     end
 
     def queue_chewy_jobs
-      ActiveSupport::Notifications.instrument('queue_jobs.chewy_kiqqer', class: self.class.name) do
+      ActiveSupport::Notifications.instrument('queue_jobs.chewy_kiqqer', class: self.class.name, id: self.id) do
         self.class.indexers or return
         self.class.indexers.each { |idx| idx.enqueue(self) }
       end

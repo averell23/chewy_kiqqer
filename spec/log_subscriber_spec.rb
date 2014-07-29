@@ -23,7 +23,7 @@ describe ChewyKiqqer::LogSubscriber do
     allow(subscriber).to receive(:logger).and_return(logger)
     expect(logger).to receive(:debug)
     expect {
-      subscriber.queue_jobs(double(payload: { class: 'Huha' }))
+      subscriber.queue_jobs(double(payload: { class: 'Huha', id: 123 }))
     }.to_not raise_error
   end
 
