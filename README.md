@@ -1,5 +1,7 @@
 # ChewyKiqqer
 
+{<img src="https://travis-ci.org/averell23/chewy_kiqqer.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/averell23/chewy_kiqqer]
+
 This is an alternative udpate/callback mechanism for [Chewy](https://github.com/toptal/chewy). It queues the updates as [Sidekiq](https://github.com/mperham/sidekiq) jobs.
 
 You can pass backrefs like with the standard chewy mechanism, but the job itself will always receive an array of ids.
