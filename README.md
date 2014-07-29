@@ -49,6 +49,8 @@ which will be indexed. The default is to use the current record.
     # Pass a proc. It will be called with the current record to get the backref
     ... backref: -> (rec) { |rec| rec.do_something }
 
+## Update handling
+
 ## Contributing
 
 1. Fork it
