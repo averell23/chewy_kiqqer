@@ -11,7 +11,7 @@ module ChewyKiqqer
 
     sidekiq_options lock: {
       timeout: 3000,
-      name:    ->(index_name, ids) { "lock:chewy_kiqqer:#{ids}-#{[ids].flatten.sort.join('-')}" }
+      name:    ->(index_name, ids) { "lock:chewy_kiqqer:#{index_name}-#{[ids].flatten.sort.join('-')}" }
     }
 
 
