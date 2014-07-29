@@ -13,7 +13,9 @@ module ChewyKiqqer
 
 
     def perform(index_name, ids)
-      Chewy.derive_type(index_name).import ids
+      ActiveSupport::Notifications.instrument('perform.chewy_kiqqer', index_name: index_name, ids: ids) do
+        Chewy.derive_type(index_name).import ids
+      end
     end
   end
 end
