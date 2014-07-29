@@ -3,6 +3,9 @@ require 'sidekiq-lock'
 
 module ChewyKiqqer
   class Worker
+
+    class LockError < StandardError ; end
+
     include Sidekiq::Worker
     include Sidekiq::Lock::Worker
 
@@ -13,9 +16,12 @@ module ChewyKiqqer
 
 
     def perform(index_name, ids)
+      lock.acquire! or raise LockError
       ActiveSupport::Notifications.instrument('perform.chewy_kiqqer', index_name: index_name, ids: ids) do
         Chewy.derive_type(index_name).import ids
       end
+    ensure
+      lock.release!
     end
   end
 end
