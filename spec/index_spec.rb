@@ -1,4 +1,4 @@
-require 'chewy_kiqqer'
+require 'spec_helper'
 
 describe ChewyKiqqer::Index do
 

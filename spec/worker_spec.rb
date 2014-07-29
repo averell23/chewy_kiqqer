@@ -1,5 +1,4 @@
-require 'chewy_kiqqer'
-require 'chewy'
+require 'spec_helper'
 
 describe ChewyKiqqer::Worker do
 

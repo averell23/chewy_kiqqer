@@ -1,4 +1,4 @@
-require 'chewy_kiqqer'
+require 'spec_helper'
 
 class Gummi
   include ChewyKiqqer::Mixin
