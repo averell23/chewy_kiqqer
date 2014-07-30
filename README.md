@@ -51,6 +51,14 @@ which will be indexed. The default is to use the current record.
 
 ## Update handling
 
+The kiqqer does *not* use Chewy's `atomic` update, since that functionality is deeply linked with Chewy's syncronous update mechanism.
+
+Instead, ChewyKiqqer will bind itself to the `#after_commit` callback, which means that it will only trigger a new job after a complete database transaction. This behaviour also ensures that only one job is enqueued per transaction.
+
+However, if you have multiple database transactions, the kiqqer will still queue multiple jobs. The same is true when you enqueue jobs manually.
+
+ChewyKiqqer uses the `sidekiq-lock` gem to ensure that all updates for one database record are run sequentially. This prevents race conditions which could lead to outdated data being written to the index otherwise.
+
 ## Contributing
 
 1. Fork it
