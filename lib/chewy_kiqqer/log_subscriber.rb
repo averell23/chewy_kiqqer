@@ -3,7 +3,11 @@ module ChewyKiqqer
   class LogSubscriber < ActiveSupport::LogSubscriber
 
     def perform(event)
-      info "ChewyKiqqer performed on #{event.payload[:index_name]} with ids #{event.payload[:ids]} - duration #{event.duration}"
+      info "ChewyKiqqer job ran on #{event.payload[:index_name]} with ids #{event.payload[:ids]} - duration #{event.duration}"
+    end
+
+    def index(event)
+      debug "ChewyKiqqer index updated on #{event.payload[:index_name]} with ids #{event.payload[:ids]} - duration #{event.duration}"
     end
 
     def queue_jobs(event)
