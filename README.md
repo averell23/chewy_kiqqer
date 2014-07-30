@@ -57,7 +57,12 @@ Instead, ChewyKiqqer will bind itself to the `#after_commit` callback, which mea
 
 However, if you have multiple database transactions, the kiqqer will still queue multiple jobs. The same is true when you enqueue jobs manually.
 
-ChewyKiqqer uses the `sidekiq-lock` gem to ensure that all updates for one database record are run sequentially. This prevents race conditions which could lead to outdated data being written to the index otherwise.
+ChewyKiqqer uses locking via redis to ensure that all updates for one database record are run sequentially. This prevents race conditions which could lead to outdated data being written to the index otherwise.
+
+## Logging
+
+Logging is disabled by default, but you can set `ChewyKiqqer.logger` if you need log output (e.g. `ChewyKiqqer.logger = Rails.logger`). ChewyKiqqer uses ActiveSupport notifications, which you can also subscribe to.
+See `log_subscriber.rb` for more info.
 
 ## Contributing
 
