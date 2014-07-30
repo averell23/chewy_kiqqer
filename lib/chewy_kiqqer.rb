@@ -5,7 +5,7 @@ require "chewy_kiqqer/version"
 require "chewy_kiqqer/mixin"
 require "chewy_kiqqer/worker"
 require "chewy_kiqqer/index"
-require "chewy_kiqqer/logger"
+require "chewy_kiqqer/config"
 require "chewy_kiqqer/log_subscriber"
 
 

@@ -17,7 +17,7 @@ module ChewyKiqqer
 
     def with_lock(index_name, ids)
       Sidekiq.redis do |redis|
-        lock_name = "#{index_name}-#{ids.join('-')}"
+        lock_name = "chewy-kiqqer:#{ChewyKiqqer.locking_scope}:#{index_name}-#{ids.join('-')}"
         redis.lock(lock_name, life: 60, acquire: 5) { index(index_name, ids) }
       end
     end
