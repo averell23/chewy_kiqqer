@@ -1,27 +1,33 @@
 require 'sidekiq'
-require 'sidekiq-lock'
+require 'redis-lock'
 
 module ChewyKiqqer
   class Worker
 
-    class LockError < StandardError ; end
-
     include Sidekiq::Worker
-    include Sidekiq::Lock::Worker
-
-    sidekiq_options lock: {
-      timeout: 3000,
-      name:    ->(index_name, ids) { "lock:chewy_kiqqer:#{index_name}-#{[ids].flatten.sort.join('-')}" }
-    }
 
 
     def perform(index_name, ids)
-      lock.acquire! or raise LockError
       ActiveSupport::Notifications.instrument('perform.chewy_kiqqer', index_name: index_name, ids: ids) do
+        with_lock(index_name, ids)
+      end
+    end
+
+    private
+
+    def with_lock(index_name, ids)
+      Sidekiq.redis do |redis|
+        lock_name = "#{index_name}-#{ids.join('-')}"
+        redis.lock(lock_name, life: 60, acquire: 5) { index(index_name, ids) }
+      end
+    end
+
+    def index(index_name, ids)
+      ActiveSupport::Notifications.instrument('index.chewy_kiqqer', index_name: index_name, ids: ids) do
         Chewy.derive_type(index_name).import ids
       end
-    ensure
-      lock.release!
     end
+
+
   end
 end

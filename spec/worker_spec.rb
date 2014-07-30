@@ -15,11 +15,4 @@ describe ChewyKiqqer::Worker do
     worker.perform('foo#bar', [17])
   end
 
-  it 'raises a lock error if the lock cannot be acquired' do
-    allow(lock).to receive(:acquire!).and_return(false)
-    expect {
-      worker.perform('foo#bar', [17])
-    }.to raise_error(ChewyKiqqer::Worker::LockError)
-  end
-
 end
