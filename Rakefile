@@ -6,3 +6,5 @@ task default: :spec
 RSpec::Core::RakeTask.new(:spec)
 
 Bundler.require
+
+task :default => :spec
