@@ -15,18 +15,16 @@ module ChewyKiqqer
 
     extend ActiveSupport::Concern
 
+    included do
+      class_attribute :indexers
+      self.indexers = []
+    end
+
     module ClassMethods
 
-      attr_reader :indexers
-
       def async_update_index(index: nil, queue: ChewyKiqqer::default_queue, backref: :self)
-        @indexers ||= []
-        install_chewy_hooks if @indexers.empty?
-        @indexers << ChewyKiqqer::Index.new(index: index, queue: queue, backref: backref)
-      end
-
-      def reset_async_chewy
-        @indexers and @indexers.clear
+        install_chewy_hooks if indexers.empty? # Only install them once
+        indexers << ChewyKiqqer::Index.new(index: index, queue: queue, backref: backref)
       end
 
       def install_chewy_hooks

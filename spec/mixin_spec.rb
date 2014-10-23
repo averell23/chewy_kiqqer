@@ -9,9 +9,12 @@ class Gummi
 
 end
 
+class GummiSubclass < Gummi
+end
+
 describe ChewyKiqqer::Mixin do
 
-  before(:each) { Gummi.reset_async_chewy }
+  before(:each) { Gummi.indexers.clear }
 
   context '#update_index' do
 
@@ -32,6 +35,12 @@ describe ChewyKiqqer::Mixin do
                         .and_return(:idx)
       Gummi.async_update_index(index: 'some#thing', queue: :medium, backref: :foobar)
       expect(Gummi.indexers).to eq [:idx]
+    end
+
+    it 'installs the indexer' do
+      Gummi.async_update_index(index: 'some#thing', queue: :medium, backref: :foobar)
+      expect(GummiSubclass.indexers.size).to eq 1
+      expect(GummiSubclass.indexers).to equal(Gummi.indexers)
     end
 
   end
