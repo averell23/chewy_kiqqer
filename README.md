@@ -4,7 +4,7 @@
 [![Code Climate](https://codeclimate.com/github/averell23/chewy_kiqqer.png)](https://codeclimate.com/github/averell23/chewy_kiqqer)
 [![Test Coverage](https://codeclimate.com/github/averell23/chewy_kiqqer/coverage.png)](https://codeclimate.com/github/averell23/chewy_kiqqer)
 
-This is an alternative udpate/callback mechanism for [Chewy](https://github.com/toptal/chewy). It queues the updates as [Sidekiq](https://github.com/mperham/sidekiq) jobs.
+This is an alternative update/callback mechanism for [Chewy](https://github.com/toptal/chewy). It queues the updates as [Sidekiq](https://github.com/mperham/sidekiq) jobs.
 
 You can pass backrefs like with the standard chewy mechanism, but the job itself will always receive an array of ids.
 
