@@ -1,3 +1,3 @@
 module ChewyKiqqer
-  VERSION = "0.3.0"
+  VERSION = "0.2.5"
 end
