@@ -29,6 +29,7 @@ module ChewyKiqqer
 
       def install_chewy_hooks
         after_commit :queue_chewy_jobs
+        respond_to?(:after_touch) and after_touch(:queue_chewy_jobs)
       end
     end
 
