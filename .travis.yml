@@ -4,6 +4,8 @@ services:
 rvm:
   - 2.0.0
   - 2.1.2
+  - 2.2.3
+sudo: false
 addons:
   code_climate:
     repo_token: dadcc13fd018e8813c5052a604bec42110d8f4c0931414639973cb94e5e150cb
