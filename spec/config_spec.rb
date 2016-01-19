@@ -14,7 +14,7 @@ describe 'config' do
 
   context '#locking_scope' do
 
-    after(:each) { ChewyKiqqer.locking_scope = nil }
+    after(:each) { ChewyKiqqer.locking_scope = 'default' }
 
     it 'can be set from the outside' do
       ChewyKiqqer.locking_scope = '42'
