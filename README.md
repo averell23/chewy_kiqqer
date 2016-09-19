@@ -4,6 +4,16 @@
 [![Code Climate](https://codeclimate.com/github/averell23/chewy_kiqqer.png)](https://codeclimate.com/github/averell23/chewy_kiqqer)
 [![Test Coverage](https://codeclimate.com/github/averell23/chewy_kiqqer/coverage.png)](https://codeclimate.com/github/averell23/chewy_kiqqer)
 
+# Deprecated: Use chewy builtins
+
+Chewy now offers several callback mechanisms and builtin support for the most popular background processing systems.
+ChewyKiqqer is no longer compatible with the newest version of chewy and will no longer be maintained.
+
+I suggest that you just roll with Chewy's defaults. Please note that for reliable operation with background queues like sidekiq
+you *should enable the option to queue on after_commit*. Otherwise your jobs may work on outdated data.
+
+# Description
+
 This is an alternative update/callback mechanism for [Chewy](https://github.com/toptal/chewy). It queues the updates as [Sidekiq](https://github.com/mperham/sidekiq) jobs.
 
 You can pass backrefs like with the standard chewy mechanism, but the job itself will always receive an array of ids.
