@@ -3,13 +3,7 @@ require 'active_support/core_ext/array/wrap'
 
 module ChewyKiqqer
 
-  def self.default_queue=(queue)
-    @default_queue = queue
-  end
-
-  def self.default_queue
-    @default_queue || 'default'
-  end
+  mattr_accessor(:default_queue) { 'default' }
 
   module Mixin
 
@@ -22,7 +16,7 @@ module ChewyKiqqer
 
     module ClassMethods
 
-      def async_update_index(index: nil, queue: ChewyKiqqer::default_queue, backref: :self)
+      def async_update_index(index: nil, queue: ChewyKiqqer.default_queue, backref: :self)
         install_chewy_hooks if indexers.empty? # Only install them once
         indexers << ChewyKiqqer::Index.new(index: index, queue: queue, backref: backref)
       end
